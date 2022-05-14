@@ -1,3 +1,4 @@
+import React from "react";
 import { Hands } from "@mediapipe/hands";
 import {Camera} from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
@@ -14,11 +15,13 @@ const MPHands = () => {
 
   function onResults(results){
 
+    // eslint-disable-next-line
     let timerId = setInterval(() => {
     const r1 = results['multiHandLandmarks'][0];
     const r2 = results['multiHandWorldLandmarks'][0];
     const r3 = results['multiHandedness'][0];
 
+    // eslint-disable-next-line
     const response = axios.get("http://localhost:5000/myhand", {params:{num:num, hands1:r1, hands2:r2, hands3:r3}});
     // console.log(response);
     // console.log(response.data);
