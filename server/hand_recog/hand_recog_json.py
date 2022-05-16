@@ -45,7 +45,7 @@ hands = mp_hands.Hands(
 
 #f = open('test.txt', 'w')
 
-file = np.genfromtxt('test.txt', delimiter=',')
+file = np.genfromtxt('./server/hand_recog/dataSet.txt', delimiter=',')
 
 angleFile = file[:,:-1]
 labelFile = file[:,-1]
@@ -60,7 +60,7 @@ prev_index = 0
 sentence = ''
 recognizeDelay = 2
 
-json_file = 'input_data.json'
+json_file = './server/hand_recog/input_data.json'
 
 with open(json_file) as json_data_temp:
     json_data = json.load(json_data_temp)
@@ -100,5 +100,5 @@ if index in gesture.keys():
     
 print(sentence)
 
-f.close()
+#f.close()
         

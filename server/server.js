@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const server = require('http').createServer(app);
 const mysql = require('mysql');
+const {PythonShell} = require('python-shell');
 
 const conn = {
     host: 'localhost',
@@ -16,7 +17,7 @@ app.use(cors());
 app.get('/myhand', (req, res) => {
     const {num, hands1, hands2, hands3} = req.query;
 
-    /*
+    /*mysql 연결 부분
     const connection = mysql.createConnection(conn);
     connection.connect();
 
@@ -31,8 +32,20 @@ app.get('/myhand', (req, res) => {
     })
     */
 
-    //console.log(num + ' 1 : ' + hands1 + ",\n2 : " + hands2 + ",\n3 : " + hands3);
-    console.log(req);
+    let options = {
+        args: [hands1, hands2, hands3]
+    }
+    const optionsJSON = JSON.stringify(options);
+    //console.log(options);
+
+    PythonShell.run("./server/hand_recog/hand_recog_json.py", options, function(err, data) {
+        if (err) throw err;
+        console.log(data);
+    });
+    
+    //console.log(hands1);
+    //console.log(hands2);
+    //console.log(hands3);
 })
 
 server.listen(5000, ()=> {
