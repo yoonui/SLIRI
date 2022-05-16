@@ -31,7 +31,8 @@ app.get('/myhand', (req, res) => {
     })
     */
 
-    console.log(num + ' 1 : ' + hands1 + ",\n2 : " + hands2 + ",\n3 : " + hands3);
+    //console.log(num + ' 1 : ' + hands1 + ",\n2 : " + hands2 + ",\n3 : " + hands3);
+    console.log(req);
 })
 
 server.listen(5000, ()=> {
