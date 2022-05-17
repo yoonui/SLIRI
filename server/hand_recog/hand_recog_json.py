@@ -43,9 +43,8 @@ hands = mp_hands.Hands(
     min_tracking_confidence = 0.5
 )
 
-#f = open('test.txt', 'w')
 
-file = np.genfromtxt('./server/hand_recog/dataSet.txt', delimiter=',')
+file = np.genfromtxt('data.txt', delimiter=',')
 
 angleFile = file[:,:-1]
 labelFile = file[:,-1]
@@ -60,20 +59,15 @@ prev_index = 0
 sentence = ''
 recognizeDelay = 2
 
-json_file = './server/hand_recog/input_data.json'
+json_file = 'input_data.json'
 
 with open(json_file) as json_data_temp:
     json_data = json.load(json_data_temp)
-
-print(json_data[0])
-print(json_data[0][1]['x'])
 
 joint = np.zeros((21,3))
 
 for j in range(21):
     joint[j] = [json_data[0][j]['x'], json_data[0][j]['y'], json_data[0][j]['x']]
-
-print(joint)
 
 v1 = joint[[0, 1, 2, 3, 0, 5, 6, 7, 0,  9, 10, 11,  0, 13, 14, 15,  0, 17, 18, 19],:]
 v2 = joint[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],:]
@@ -89,15 +83,45 @@ angle = np.degrees(angle)
 data = np.array([angle], dtype=np.float32)
 ret, results, neighbours, dist = knn.findNearest(data, 3)
 index = int(results[0][0])
-print(index)
+
 if index in gesture.keys():
-    print(index)
-    if index == 26:
+    # 31:'SPACE', 32:'BACKSPACE', 33:'DUAL', 34:'END'
+    # ㄱ, ㄷ, ㅂ, ㅅ, ㅈ
+    # ㄱ : 0, ㄷ : 2, ㅂ : 5, ㅅ : 6, ㅈ:8
+    if index == 31:
         sentence += ' '
+    elif index == 32:
+        sentence = sentence[:-1]
+    elif index == 33:
+        if sentence[-1] == 'ㄱ':
+            temp_list = list(sentence)
+            temp_list[-1] = 'ㄲ'
+            sentence = ''.join(temp_list)
+        elif sentence[-1] == 'ㄷ':
+            temp_list = list(sentence)
+            temp_list[-1] = 'ㄸ'
+            sentence = ''.join(temp_list)
+        elif sentence[-1] == 'ㅂ':
+            temp_list = list(sentence)
+            temp_list[-1] = 'ㅃ'
+            sentence = ''.join(temp_list)
+        elif sentence[-1] == 'ㅅ':
+            temp_list = list(sentence)
+            temp_list[-1] = 'ㅆ'
+            sentence = ''.join(temp_list)
+        elif sentence[-1] == 'ㅈ':
+            temp_list = list(sentence)
+            temp_list[-1] = 'ㅉ'
+            sentence = ''.join(temp_list)
+        else:
+            pass
+    elif index == 34:
+        # send sentence
+        sentence = ''
     else:
-        print(index)
         sentence += gesture[index]
-    
+    startTime = time.time()
+
 print(sentence)
 
 #f.close()
