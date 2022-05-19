@@ -4,6 +4,7 @@ const cors = require('cors');
 const server = require('http').createServer(app);
 const mysql = require('mysql');
 const {PythonShell} = require('python-shell');
+const fs = require('fs');
 
 const conn = {
     host: 'localhost',
@@ -40,9 +41,30 @@ app.get('/myhand', (req, res) => {
 
     PythonShell.run("./server/hand_recog/hand_recog_json.py", options, function(err, data) {
         if (err) throw err;
-        console.log(data);
+        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
+        console.log(decodeURIComponent(data));
+        console.log(decodeURI(data));
+        console.log(data.toString('utf-8'));
+        console.log(data.toString());
+
+        
+        /* 파일관련 코드 추가 */
+        const file = './server/test.txt';
+        fs.open(file, 'a', function(err, fd) { // 파일 생성
+            if(err) throw err;
+            if(fd == '9'){
+                console.log('file create.');
+            } else { // 파일 이어쓰기
+                fs.appendFile('./server/test.txt', JSON.stringify(data), function(err){
+                    if(err) throw err;
+                    console.log('Appended to file!');
+                });
+            }
+        })
+        
     });
-    
+
     //console.log(hands1);
     //console.log(hands2);
     //console.log(hands3);
