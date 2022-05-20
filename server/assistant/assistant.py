@@ -20,9 +20,7 @@ def assistant(input_text):
     full_res_text = ""
     for m in response.query_result.fulfillment_messages:
         full_res_text += m.text.text[0]+" "
-    return {
-        full_res_text
-    }
+    return full_res_text
 
 
 if __name__ == '__main__':
