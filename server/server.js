@@ -41,13 +41,12 @@ app.get('/myhand', (req, res) => {
 
     PythonShell.run("./server/hand_recog/hand_recog_json.py", options, function(err, data) {
         if (err) throw err;
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(data));
-        console.log(decodeURIComponent(data));
-        console.log(decodeURI(data));
-        console.log(data.toString('utf-8'));
-        console.log(data.toString());
 
+        let result = data[0].replace(`b\'`, '').replace(`\'`, '');
+
+        let buff = Buffer.from(result, 'base64');
+        let text = buff.toString('utf-8');
+        console.log(text);
         
         /* 파일관련 코드 추가 */
         const file = './server/test.txt';
@@ -56,18 +55,16 @@ app.get('/myhand', (req, res) => {
             if(fd == '9'){
                 console.log('file create.');
             } else { // 파일 이어쓰기
-                fs.appendFile('./server/test.txt', JSON.stringify(data), function(err){
+                fs.appendFile('./server/test.txt', text, function(err){
                     if(err) throw err;
                     console.log('Appended to file!');
+                    res.send(text);
                 });
             }
         })
         
     });
-
-    //console.log(hands1);
-    //console.log(hands2);
-    //console.log(hands3);
+    
 })
 
 server.listen(5000, ()=> {

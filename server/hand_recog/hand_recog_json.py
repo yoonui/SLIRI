@@ -6,6 +6,9 @@ import time
 import platform
 from PIL import ImageFont, ImageDraw, Image
 
+import base64
+import sys
+
 
 def cv2_draw_label(image, text, point):
     x, y = point
@@ -122,7 +125,7 @@ if index in gesture.keys():
         sentence += gesture[index]
     startTime = time.time()
 
-print(sentence)
+print(base64.b64encode(sentence.encode('utf-8')))
 
 #f.close()
         
