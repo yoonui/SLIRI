@@ -40,7 +40,7 @@ app.get('/myhand', (req, res) => {
     // console.log(options);
     // console.log(optionsJSON);
 
-    PythonShell.run("./server/hand_recog/hand_recog_json.py", options, function(err, data) {
+    PythonShell.run("./server/hand_recog/module1.py", options, function(err, data) {
         if (err) throw err;
 
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
@@ -68,6 +68,7 @@ app.get('/myhand', (req, res) => {
 
 })
 
+app.get('/myhand', (req, res) => {})
 server.listen(5000, ()=> {
     console.log('running');
 })

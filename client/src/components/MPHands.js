@@ -24,9 +24,8 @@ const MPHands = () => {
     // eslint-disable-next-line
     const response = axios.get("http://localhost:5000/myhand", {params:{num:num, hands1:r1, hands2:r2, hands3:r3}});
     // console.log(response);
-    console.log(response.data[0]['text']);
+    // console.log(response.data);
 
-    // console.log(results);
     num++;
     
   }, 2000);
