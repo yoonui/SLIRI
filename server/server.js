@@ -58,15 +58,13 @@ app.get('/myhand', (req, res) => {
                 fs.appendFile('./server/test.txt', text, function(err){
                     if(err) throw err;
                     console.log('Appended to file!');
+                    res.send(text);
                 });
             }
         })
         
     });
-
-    //console.log(hands1);
-    //console.log(hands2);
-    //console.log(hands3);
+    
 })
 
 server.listen(5000, ()=> {
