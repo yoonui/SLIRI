@@ -38,6 +38,8 @@ temp_json = sys.argv[1]
 
 joint = np.zeros((21,3))
 
+
+
 for i in range(21):
     joint[i] = [temp_json[i]['x'], temp_json[i]['y'], temp_json[i]['z']]
     print(joint[i])
