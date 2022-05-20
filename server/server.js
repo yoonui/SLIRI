@@ -16,7 +16,7 @@ const conn = {
 app.use(cors());
 
 app.get('/myhand', (req, res) => {
-    const {hands1, hands2, hands3} = req.query;
+    // const {hands1} = req.query;
 
     /*mysql 연결 부분
     const connection = mysql.createConnection(conn);
@@ -33,14 +33,19 @@ app.get('/myhand', (req, res) => {
     })
     */
 
+    /*
+    let args = {hands1};
     let options = {
-        args: [hands1, hands2, hands3]
+        args: [hands1]
     }
+    */
+    
+    console.log(req.query);
     // const optionsJSON = JSON.stringify(options);
     // console.log(options);
     // console.log(optionsJSON);
 
-    PythonShell.run("./server/hand_recog/module1.py", options, function(err, data) {
+    PythonShell.run("./server/hand_recog/module1.py", req.query, function(err, data) {
         if (err) throw err;
 
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
@@ -59,7 +64,6 @@ app.get('/myhand', (req, res) => {
                 fs.appendFile('./server/test.txt', text, function(err){
                     if(err) throw err;
                     console.log('Appended to file!');
-                    res.send(text);
                 });
             }
         })
@@ -68,7 +72,16 @@ app.get('/myhand', (req, res) => {
 
 })
 
-app.get('/myhand', (req, res) => {})
+app.get('/response', (req, res) => {
+
+    // 파일을 열어서 내부 값 전달하기
+    const file = './server/test.txt';
+    fs.readFile('sample.txt', 'utf8', function(err, data){
+        console.log(data);
+    });
+    res.send(text);
+
+})
 server.listen(5000, ()=> {
     console.log('running');
 })
