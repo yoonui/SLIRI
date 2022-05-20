@@ -11,8 +11,8 @@ gesture = {
     27:'ㅟ', 28:'ㅒ', 29:'ㅖ', 30:'ㅢ', 31:'SPACE', 32:'BACKSPACE', 33:'DUAL', 34:'END'
 } 
 
-f = open("sentence.txt", 'a')
-file = np.genfromtxt('data.txt', delimiter=',')
+f = open("./server/hand_recog/sentence.txt", 'a')
+file = np.genfromtxt('./server/hand_recog/data.txt', delimiter=',')
 
 angleFile = file[:,:-1]
 labelFile = file[:,-1]

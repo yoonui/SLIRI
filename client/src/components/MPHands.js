@@ -12,8 +12,7 @@ const MPHands = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   // eslint-disable-next-line
-
-  function onResults(results){
+function onResults(results){
     // eslint-disable-next-line
     const r1 = results['multiHandLandmarks'][0];
     const r2 = results['multiHandWorldLandmarks'][0];
@@ -22,11 +21,7 @@ const MPHands = () => {
     // eslint-disable-next-line
     const response = axios.get("http://localhost:5000/myhand", {params:{ hands1:r1, hands2:r2, hands3:r3}});
     // console.log(response);
-    console.log(response.data[0]['text']);
-
-    // console.log(results);
-    // console.clear();
-
+    // console.log(response.data);
 
     //setting height, width of Canvas
     canvasRef.current.width = webcamRef.current.video.videoWidth;
