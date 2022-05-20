@@ -1,13 +1,28 @@
-import React from 'react';
+  // eslint-disable-next-line
+import React,{useEffect, useState} from 'react';
 import MPHands from "../components/MPHands";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import {Helmet} from "react-helmet";
-import assistantLogo from "../assets/Google_Assistant_logo.png";
+  // eslint-disable-next-line
+import axios from 'axios';
 
 import '../App.css';
+import Chat from '../components/Chat';
 
 function Main() {
+  // eslint-disable-next-line
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/text")
+      .then((res) => {
+        console.log(res);
+      }
+    );
+  });
+
   return (
     <>
          <Helmet>
@@ -23,16 +38,8 @@ function Main() {
               <FontAwesomeIcon icon={faUsers} />
             </div>
             <MPHands/>
-            <div className="desc">(수어에 대한 자막)</div>
           </div>
-          <div className="section__assistant">
-            <ul>
-              <li>
-                <img src={assistantLogo} className="assistant" alt={"구글 어시스턴트 로고"}/>
-                <p>안녕하세요? 무엇을 도와드릴까요?</p>
-              </li>
-            </ul>
-          </div>
+          <Chat/>
         </div>
       </div>
     </div>
