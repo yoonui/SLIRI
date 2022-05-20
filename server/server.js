@@ -36,8 +36,9 @@ app.get('/myhand', (req, res) => {
     let options = {
         args: [hands1, hands2, hands3]
     }
-    const optionsJSON = JSON.stringify(options);
-    //console.log(options);
+    // const optionsJSON = JSON.stringify(options);
+    // console.log(options);
+    // console.log(optionsJSON);
 
     PythonShell.run("./server/hand_recog/hand_recog_json.py", options, function(err, data) {
         if (err) throw err;
@@ -45,7 +46,7 @@ app.get('/myhand', (req, res) => {
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
 
         let buff = Buffer.from(result, 'base64');
-        let text = buff.toString('utf-8');
+        let text = buff.toString('utf-8');g
         console.log(text);
         
         /* 파일관련 코드 추가 */
@@ -64,7 +65,7 @@ app.get('/myhand', (req, res) => {
         })
         
     });
-    
+
 })
 
 server.listen(5000, ()=> {
