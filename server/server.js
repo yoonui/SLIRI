@@ -46,7 +46,7 @@ app.get('/myhand', (req, res) => {
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
 
         let buff = Buffer.from(result, 'base64');
-        let text = buff.toString('utf-8');g
+        let text = buff.toString('utf-8');
         console.log(text);
         
         /* 파일관련 코드 추가 */
