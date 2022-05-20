@@ -16,7 +16,7 @@ const conn = {
 app.use(cors());
 
 app.get('/myhand', (req, res) => {
-    const {num, hands1, hands2, hands3} = req.query;
+    const {hands1, hands2, hands3} = req.query;
 
     /*mysql 연결 부분
     const connection = mysql.createConnection(conn);
