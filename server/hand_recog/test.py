@@ -1,5 +1,7 @@
-from unicode import join_jamos
+import sys
+import base64
 
-sentence = ['ㅣ', 'ㄱ', 'ㄹ','ㅏ']
-final_sentence = join_jamos(sentence)
-print(final_sentence)
+temp_json = sys.argv[1]
+temp_json = sys.argv[2]
+temp_json = sys.argv[3]
+print(base64.b64encode(temp_json.encode('utf-8')))
