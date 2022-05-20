@@ -21,14 +21,10 @@ def assistant(input_text):
     for m in response.query_result.fulfillment_messages:
         full_res_text += m.text.text[0]+" "
     return {
-        "question": response.query_result.query_text,
-        "intent": response.query_result.intent.display_name,
-        "response": full_res_text
+        full_res_text
     }
 
 
 if __name__ == '__main__':
-    session_id = '1223455'
-    text = '날씨'
-    language_code = 'ko-KR'
-    print(assistant(text))
+    response = assistant("비")
+    print(response)
