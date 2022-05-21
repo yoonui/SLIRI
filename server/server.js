@@ -15,6 +15,7 @@ const conn = {
 }
 app.use(cors());
 
+// 수어 인식
 app.get('/myhand', (req, res) => {
     // const {hands1} = req.query;
 
@@ -67,19 +68,27 @@ app.get('/myhand', (req, res) => {
                 });
             }
         })
-        
+        fs.close(fd, function() {
+            console.log('파일 닫기');
+        });
     });
 
 })
 
+// txt 파일 값 전달
 app.get('/response', (req, res) => {
 
     // 파일을 열어서 내부 값 전달하기
+    // 아직 실행 X
     const file = './server/test.txt';
-    fs.readFile('sample.txt', 'utf8', function(err, data){
+    fs.readFile(file, 'utf8', function(err, data){
+        if(err) throw err;
         console.log(data);
+        res.send(data);
     });
-    res.send(text);
+    fs.close(fd, function() {
+        console.log('파일 닫기');
+    });
 
 })
 server.listen(5000, ()=> {
