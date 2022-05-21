@@ -76,7 +76,7 @@ app.get('/myhand', (req, res) => {
 })
 
 // txt 파일 값 전달
-app.get('/response', (req, res) => {
+app.get('/myhandRes', (req, res) => {
 
     // 파일을 열어서 내부 값 전달하기
     // 아직 실행 X
