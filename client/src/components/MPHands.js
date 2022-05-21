@@ -4,33 +4,24 @@ import {Camera} from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
 import drawUtils from '@mediapipe/drawing_utils';
 // eslint-disable-next-line
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, useState} from 'react';
+// eslint-disable-next-line
 import axios from 'axios';
-
-let num = 0;
 
 const MPHands = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-
-  function onResults(results){
-
+  // eslint-disable-next-line
+function onResults(results){
     // eslint-disable-next-line
-    let timerId = setInterval(() => {
     const r1 = results['multiHandLandmarks'][0];
-    const r2 = results['multiHandWorldLandmarks'][0];
-    const r3 = results['multiHandedness'][0];
 
     // eslint-disable-next-line
-    const response = axios.get("http://localhost:5000/myhand", {params:{num:num, hands1:r1, hands2:r2, hands3:r3}});
+
+    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1:r1}});
     // console.log(response);
-    console.log(response.data[0]['text']);
-
-    // console.log(results);
-    num++;
+    // console.log(response.data);
     
-  }, 2000);
-
     //setting height, width of Canvas
     canvasRef.current.width = webcamRef.current.video.videoWidth;
     canvasRef.current.height = webcamRef.current.video.videoHeight;
@@ -62,7 +53,8 @@ const MPHands = () => {
       minTrackingConfidence: 0.5,
       selfieMode: true
     })
-    hands.onResults(onResults);
+
+      hands.onResults(onResults, 1000);
 
     if(typeof webcamRef.current != "undefined" && webcamRef.current != null){
       const camera = new Camera(webcamRef.current.video, {
