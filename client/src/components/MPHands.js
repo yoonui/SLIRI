@@ -18,7 +18,7 @@ function onResults(results){
 
     // eslint-disable-next-line
 
-    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1:r1}});
+    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1:r1 }});
     // console.log(response);
     // console.log(response.data);
     

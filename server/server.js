@@ -34,15 +34,16 @@ app.get('/myhand', (req, res) => {
     })
     */
 
+    
     /*
-    let args = {hands1};
+    let args = {hands1}
     let options = {
         args: [hands1]
     }
     */
     
     console.log(req.query);
-    // const optionsJSON = JSON.stringify(options);
+    // const optionsJSON = JSON.stringify(req.query);
     // console.log(options);
     // console.log(optionsJSON);
 
@@ -68,9 +69,6 @@ app.get('/myhand', (req, res) => {
                 });
             }
         })
-        fs.close(fd, function() {
-            console.log('파일 닫기');
-        });
     });
 
 })
@@ -85,9 +83,6 @@ app.get('/myhandRes', (req, res) => {
         if(err) throw err;
         console.log(data);
         res.send(data);
-    });
-    fs.close(fd, function() {
-        console.log('파일 닫기');
     });
 
 })
