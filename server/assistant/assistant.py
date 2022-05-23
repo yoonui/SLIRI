@@ -23,8 +23,3 @@ def assistant(input_text):
         full_res_text += m.text.text[0]+" "
 
     return full_res_text
-
-
-if __name__ == '__main__':
-    response = assistant("비")
-    print(response)
