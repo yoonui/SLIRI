@@ -1,7 +1,7 @@
 import sys
 import base64
 
-temp_json1 = sys.argv[0]
+temp_json1 = sys.argv[1]
 #temp_json2 = sys.argv[2]
 #temp_json3 = sys.argv[3]
 #print(base64.b64encode(temp_json.encode('utf-8')))

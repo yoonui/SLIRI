@@ -3,22 +3,18 @@ import { Hands } from "@mediapipe/hands";
 import {Camera} from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
 import drawUtils from '@mediapipe/drawing_utils';
-// eslint-disable-next-line
 import {useRef, useEffect, useState} from 'react';
-// eslint-disable-next-line
 import axios from 'axios';
 
 const MPHands = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  // eslint-disable-next-line
+
 function onResults(results){
-    // eslint-disable-next-line
+
     const r1 = results['multiHandLandmarks'][0];
 
-    // eslint-disable-next-line
-
-    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1:r1 }});
+    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1 : JSON.stringify(r1)}});
     // console.log(response);
     // console.log(response.data);
     
