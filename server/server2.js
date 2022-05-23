@@ -7,13 +7,16 @@ const spawn = require('child_process').spawn;
 app.use(cors());
 
 app.get('/', (req, res) => {
-    const result = spawn('python', ['./server/hand_recog2/hand_recog.py']);
-    result.stdout.on('data', function(data){
+    const result1 = spawn('python', ['./server/hand_recog2/hand_recog.py']);
+    const result2 = spawn('python', ['./server/audio_listener.py']);
+
+    result1.stdout.on('data', function(data){
         console.log(data.toString());
     })
-    result.stderr.on('data', function(data){
+    result1.stderr.on('data', function(data){
         console.log(data.toString());
     })
+    
 })
 
 server.listen(5000, ()=> {
