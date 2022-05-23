@@ -25,11 +25,15 @@ app.get('/myhand', (req, res) => {
     }
     
     // console.log(req.query);
+    // console.log(typeof(req.query));
     // const optionsJSON = JSON.stringify(hands1);
     // console.log(options);
-    console.log(hands1[0]);
+    const a = JSON.stringify(hands1);
+    console.log(a);
+    console.log(hands1);
 
-    PythonShell.run("./server/hand_recog/module1.py", hands1, function(err, data) {
+    
+    PythonShell.run("./server/hand_recog/test.py", JSON.stringify(hands1), function(err, data) {
         if (err) throw err;
 
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
@@ -38,7 +42,7 @@ app.get('/myhand', (req, res) => {
         let text = buff.toString('utf-8');
         console.log(text);
         
-        /* 파일관련 코드 추가 */
+        // 파일 관련 코드 추가
         const file = './server/test.txt';
         fs.open(file, 'a', function(err, fd) { // 파일 생성
             if(err) throw err;
@@ -52,7 +56,6 @@ app.get('/myhand', (req, res) => {
             }
         })
     });
-
 })
 
 // txt 파일 값 전달

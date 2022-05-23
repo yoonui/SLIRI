@@ -11,4 +11,4 @@ asd = {"x":0.3372095823287964,"y":0.902660608291626,"z":5.018708861825871e-7},{"
 qwe = type(temp_json1)
 
 print(base64.b64encode(temp_json1.encode('utf-8')))
-#print(asd)
+# print(base64.b64encode(qwe.encode('utf-8')))

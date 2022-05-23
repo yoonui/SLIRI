@@ -5,9 +5,9 @@ myToken = "xoxb-3451298675446-3443353129815-ybjtXOw57L7B4O0vdslo1U4s"
 
 def post_message(token, channel, text):
     response = requests.post("https://slack.com/api/chat.postMessage",
-                             headers={"Authorization": "Bearer " + token},
-                             data={"channel": channel, "text": text}
-                             )
+                            headers={"Authorization": "Bearer " + token},
+                            data={"channel": channel, "text": text}
+                            )
     print(response)
 
 def notice1():

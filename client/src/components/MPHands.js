@@ -12,11 +12,12 @@ const MPHands = () => {
 
 function onResults(results){
 
-    const r1 = results['multiHandLandmarks'][0];
+    const r1 = results['multiHandLandmarks'][0][0];
+    let formData = new FormData();
+    formData.append("data", JSON.stringify(r1));
 
-    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1 : JSON.stringify(r1)}});
-    // console.log(response);
-    // console.log(response.data);
+
+    const response = axios.get("http://localhost:5000/myhand", {params:{ hands1 : JSON.stringify(r1) }});
     
     //setting height, width of Canvas
     canvasRef.current.width = webcamRef.current.video.videoWidth;
