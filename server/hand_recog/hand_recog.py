@@ -4,7 +4,7 @@ import numpy as np
 import keyboard
 import time
 import platform
-from unicode import join_jamos
+from make_sentence import join_jamos
 from PIL import ImageFont, ImageDraw, Image
 
 
