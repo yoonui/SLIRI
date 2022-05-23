@@ -7,6 +7,8 @@ from message_sender import notice1
 from message_sender import notice2
 from audio_classifier import audio_classifier
 from numpy.linalg import norm
+import sys
+import base64
 
 def audio_listner():
     door_bell = np.array([38, 61, 56, 52, 78, 152, 67, 59, 55, 63, 61, 74, 86, 96,
@@ -68,6 +70,8 @@ def audio_listner():
 
         #시각화
         line.set_ydata(dataInt)
+
+        # 화면 그리는 코드
         fig.canvas.draw()
         fig.canvas.flush_events()
 
@@ -79,13 +83,15 @@ def audio_listner():
 
         if audio_classifier(audio_vector[0], ndoor, nfire) == 1:
             if th1[count_for_th1].is_alive() == False:
-                print("초인종이 울렸습니다")
+                print(base64.b64encode("초인종이 울렸습니다".encode('utf-8')))
+                # print("초인종이 울렸습니다")
                 count_for_th1 += 1
                 th1[count_for_th1].start()
 
         elif audio_classifier(audio_vector[0], ndoor, nfire) == 2:
             if th2[count_for_th2].is_alive() == False:
-                print("화재경보가 울렸습니다")
+                print(base64.b64encode("화재경보가 울렸습니다".encode('utf-8')))
+                # print("화재경보가 울렸습니다")
                 count_for_th2 += 1
                 th2[count_for_th2].start()
         else:
