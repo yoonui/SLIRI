@@ -11,42 +11,25 @@ const conn = {
     port: '3306',
     user: 'root',
     password: '1189',
-    database: 'demo'
+    database: 'capstone'
 }
 app.use(cors());
 
 // 수어 인식
 app.get('/myhand', (req, res) => {
-    // const {hands1} = req.query;
+    const {hands1} = req.query;
 
-    /*mysql 연결 부분
-    const connection = mysql.createConnection(conn);
-    connection.connect();
-
-    const testQuery = "select * from test where id = " + id;
-    
-    connection.query(testQuery, function(err, result, fields){
-        if(err){
-            console.log(err);
-        }
-        console.log(result);
-        res.send(result);
-    })
-    */
-
-    /*
-    let args = {hands1};
+    // let args = {hands1}
     let options = {
-        args: [hands1]
+        args: hands1
     }
-    */
     
-    console.log(req.query);
-    // const optionsJSON = JSON.stringify(options);
+    // console.log(req.query);
+    // const optionsJSON = JSON.stringify(hands1);
     // console.log(options);
-    // console.log(optionsJSON);
+    console.log(hands1[0]);
 
-    PythonShell.run("./server/hand_recog/module1.py", req.query, function(err, data) {
+    PythonShell.run("./server/hand_recog/module1.py", hands1, function(err, data) {
         if (err) throw err;
 
         let result = data[0].replace(`b\'`, '').replace(`\'`, '');
@@ -64,19 +47,16 @@ app.get('/myhand', (req, res) => {
             } else { // 파일 이어쓰기
                 fs.appendFile('./server/test.txt', text, function(err){
                     if(err) throw err;
-                    console.log('Appended to file!');
+                    //console.log('Appended to file!');
                 });
             }
         })
-        fs.close(fd, function() {
-            console.log('파일 닫기');
-        });
     });
 
 })
 
 // txt 파일 값 전달
-app.get('/response', (req, res) => {
+app.get('/myhandRes', (req, res) => {
 
     // 파일을 열어서 내부 값 전달하기
     // 아직 실행 X
@@ -86,11 +66,28 @@ app.get('/response', (req, res) => {
         console.log(data);
         res.send(data);
     });
-    fs.close(fd, function() {
-        console.log('파일 닫기');
-    });
 
 })
+
+// 명령어 리스트 전달
+app.get('/myList', (req, res) => {
+    const {hands1} = req.query;
+
+    // DB에서 조회하기
+    const connection = mysql.createConnection(conn);
+    connection.connect();
+
+    const testQuery = "select list1, list2, list3 from myList where oneChar = " + hands1;
+    
+    connection.query(testQuery, function(err, result, fields){
+        if(err){
+            console.log(err);
+        }
+        console.log(result);
+        res.send(JSON.stringify(result));
+    })
+})
+
 server.listen(5000, ()=> {
     console.log('running');
 })
