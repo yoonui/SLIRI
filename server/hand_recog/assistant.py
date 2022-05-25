@@ -2,7 +2,7 @@ from google.cloud import dialogflow
 import os
 PROJECT_ID = "newagent-ubwu"
 SESSION_ID = "123456789"
-KEY_PATH = "E:/Study/2022-1학기/캡스톤디자인/캡디깃헙/server/assistant/newagent-ubwu-0cb9c3137f42.json"  # 경로설정 필수
+KEY_PATH = "C:/Users/yoony/Desktop/vscode/SLIRI/server/assistant/newagent-ubwu-40469c016cd4.json"  # 경로설정 필수
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = KEY_PATH
 
 
