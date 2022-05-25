@@ -4,6 +4,7 @@ const cors = require('cors');
 const server = require('http').createServer(app);
 const mysql = require('mysql');
 const {PythonShell} = require('python-shell');
+const spawn = require('child_process').spawn;
 const fs = require('fs');
 
 const conn = {
@@ -13,7 +14,23 @@ const conn = {
     password: '1189',
     database: 'capstone'
 }
+
 app.use(cors());
+
+// 비동기 실행
+app.get('/', (req, res) => {
+
+    // const result1 = spawn('python', ['./server/hand_recog/hand_recog.py']);
+    // const result2 = spawn('python', ['./server/audio_listener.py']);
+
+    PythonShell.run("./server/hand_recog/hand_recog.py", "/", function(err, data) {
+        if (err) throw err;
+    })
+
+    PythonShell.run("./server/audio_listener.py", "/", function(err, data) {
+        if (err) throw err;
+    })
+})
 
 // 수어 인식
 app.get('/myhand', (req, res) => {
@@ -43,13 +60,13 @@ app.get('/myhand', (req, res) => {
         console.log(text);
         
         // 파일 관련 코드 추가
-        const file = './server/test.txt';
+        const file = './server/MyList.txt';
         fs.open(file, 'a', function(err, fd) { // 파일 생성
             if(err) throw err;
             if(fd == '9'){
                 console.log('file create.');
             } else { // 파일 이어쓰기
-                fs.appendFile('./server/test.txt', text, function(err){
+                fs.appendFile('./server/MyList.txt', text, function(err){
                     if(err) throw err;
                     //console.log('Appended to file!');
                 });
@@ -63,7 +80,7 @@ app.get('/myhandRes', (req, res) => {
 
     // 파일을 열어서 내부 값 전달하기
     // 아직 실행 X
-    const file = './server/test.txt';
+    const file = './server/MyList.txt';
     fs.readFile(file, 'utf8', function(err, data){
         if(err) throw err;
         console.log(data);
