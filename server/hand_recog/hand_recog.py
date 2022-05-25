@@ -6,6 +6,7 @@ import time
 import platform
 from make_sentence import join_jamos
 from PIL import ImageFont, ImageDraw, Image
+import assistant
 
 
 def cv2_draw_label(image, text, point):
@@ -30,19 +31,11 @@ def cv2_draw_label(image, text, point):
 
 max_num_hands = 1
 
-# 34개? backspace랑 space까지, 쌍자음은 어떻게?
-
 gesture = {
     0:'ㄱ', 1:'ㄴ', 2:'ㄷ', 3:'ㄹ', 4:'ㅁ', 5:'ㅂ', 6:'ㅅ', 7:'ㅇ', 8:'ㅈ', 9:'ㅊ', 10:'ㅋ', 11:'ㅌ', 12:'ㅍ', 13:'ㅎ',
     14:'ㅏ', 15:'ㅑ', 16:'ㅓ', 17:'ㅕ', 18:'ㅗ', 19:'ㅛ', 20:'ㅜ', 21:'ㅠ', 22:'ㅡ', 23:'ㅣ', 24:'ㅐ', 25:'ㅔ', 26:'ㅚ',
-    27:'ㅟ', 28:'ㅒ', 29:'ㅖ', 30:'ㅢ', 31:'SPACE', 32:'BACKSPACE', 33:'DUAL'
+    27:'ㅟ', 28:'ㅒ', 29:'ㅖ', 30:'ㅢ', 31:'SPACE', 32:'BACKSPACE', 33:'DUAL', 34:'END'
 }
-
-# gesture = {
-#     0:'ㄱ', 1:'ㄴ', 2:'ㄷ', 3:'d', 4:'e', 5:'f', 6:'g', 7:'h', 8:'i', 9:'j', 10:'k',
-#     11:'l', 12:'m', 13:'n', 14:'o', 15:'p', 16:'q', 17:'r', 18:'s', 19:'t', 20:'u',
-#     21:'v', 22:'w', 23:'ㅁ', 24:'ㅂ', 25:'ㅅ', 26:'spacing'
-# }
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -51,8 +44,6 @@ hands = mp_hands.Hands(
     min_detection_confidence = 0.5,
     min_tracking_confidence = 0.5
 )
-
-f = open('test.txt', 'w')
 
 file = np.genfromtxt('data.txt', delimiter=',')
 angleFile = file[:,:-1]
@@ -69,7 +60,8 @@ prev_index = 0
 sentence = ''
 recognizeDelay = 2
 
-json_file = 'input_data.json'
+assistant_result = np.zeros((200, 1500, 3), np.uint8)
+#cv2.imshow('ASSISTANT_RESULT', assistant_result)
 
 while True:
     ret, img = cap.read()
@@ -95,15 +87,6 @@ while True:
             angle = np.arccos(np.einsum('nt,nt->n', compareV1, compareV2))
             angle = np.degrees(angle)
             
-            if keyboard.is_pressed('a'):
-                for num in angle:
-                    num = round(num, 6)
-                    f.write(str(num))
-                    f.write(',')
-                f.write("1.000000")
-                f.write('\n')
-                print("next")
-            
             data = np.array([angle], dtype=np.float32)
             ret, results, neighbours, dist = knn.findNearest(data, 3)
             index = int(results[0][0])
@@ -113,25 +96,57 @@ while True:
                     prev_index = index
                 else:
                     if time.time() - startTime > recognizeDelay:
-                        if index == 26:
+                        if index == 31:
                             sentence += ' '
+                        elif index == 32:
+                            sentence = sentence[:-1]
+                        elif index == 33:
+                            if sentence[-1] == 'ㄱ':
+                                temp_list = list(sentence)
+                                temp_list[-1] = 'ㄲ'
+                                sentence = ''.join(temp_list)
+                            elif sentence[-1] == 'ㄷ':
+                                temp_list = list(sentence)
+                                temp_list[-1] = 'ㄸ'
+                                sentence = ''.join(temp_list)
+                            elif sentence[-1] == 'ㅂ':
+                                temp_list = list(sentence)
+                                temp_list[-1] = 'ㅃ'
+                                sentence = ''.join(temp_list)
+                            elif sentence[-1] == 'ㅅ':
+                                temp_list = list(sentence)
+                                temp_list[-1] = 'ㅆ'
+                                sentence = ''.join(temp_list)
+                            elif sentence[-1] == 'ㅈ':
+                                temp_list = list(sentence)
+                                temp_list[-1] = 'ㅉ'
+                                sentence = ''.join(temp_list)
+                            else:
+                                pass
+                        elif index == 34:
+                            result_txt = ''
+                            assistant_result = np.zeros((200, 1500, 3), np.uint8)
+                            combined_sentence = join_jamos(sentence)
+                            result_txt = assistant.assistant(combined_sentence)
+                            assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
+                            sentence = ''
                         else:
                             sentence += gesture[index]
                         startTime = time.time()
-                
-                #cv2.putText(img, gesture[index].upper(), (int(res.landmark[0].x * img.shape[1] - 10),
-                #            int(res.landmark[0].y * img.shape[0] + 40)), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255,255),3)
                 
             mp_drawing.draw_landmarks(img, res, mp_hands.HAND_CONNECTIONS)
         
         final_sentence = join_jamos(sentence)
         img = cv2_draw_label(img, final_sentence, (30, 30))
         
+        #cv2.namedWindow('HAND',cv2.WND_PROP_FULLSCREEN)
+        #cv2.setWindowProperty('HAND', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+        cv2.namedWindow('HAND', flags=cv2.WINDOW_GUI_NORMAL)
         
         cv2.imshow('HAND', img)
         cv2.waitKey(1)
+        cv2.imshow('ASSISTANT RESULT', assistant_result)
+        cv2.waitKey(1)
+        
         if keyboard.is_pressed('q'):
             break
-        
-f.close()
-        
