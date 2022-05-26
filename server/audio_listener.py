@@ -55,11 +55,17 @@ def audio_listner():
         frames_per_buffer=CHUNK
     )
 
+    plt.rcParams['toolbar'] = 'None'
+    print(plt.rcParams)
     fig, ax = plt.subplots()
+    fig.canvas.toolbar_visible = False
+    fig.canvas.header_visible = False
+    fig.canvas.footer_visible = False
     x = np.arange(0, 2 * CHUNK, 2)
     line, = ax.plot(x, np.random.rand(CHUNK), 'r')
     ax.set_ylim(-60000, 60000)
     ax.ser_xlim = (0, CHUNK)
+    plt.axis('off')
     fig.show()
 
     audio_vector = np.zeros(shape=(1, 110), dtype=np.int64)
@@ -72,6 +78,7 @@ def audio_listner():
         line.set_ydata(dataInt)
 
         # 화면 그리는 코드
+        
         fig.canvas.draw()
         fig.canvas.flush_events()
 

@@ -64,7 +64,8 @@ assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
 #cv2.imshow('ASSISTANT_RESULT', assistant_result)
 
 while True:
-    ret, img = cap.read()
+    ret, img = cap.read() #650 550
+    img = cv2.resize(img, dsize=(650, 550))
     if not ret:
         continue
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -142,6 +143,7 @@ while True:
         #cv2.namedWindow('HAND',cv2.WND_PROP_FULLSCREEN)
         #cv2.setWindowProperty('HAND', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         cv2.namedWindow('HAND', flags=cv2.WINDOW_GUI_NORMAL)
+        
         
         cv2.imshow('HAND', img)
         cv2.waitKey(1)
