@@ -1,7 +1,7 @@
 import requests
 import time
 
-myToken = "xoxb-3451298675446-3443353129815-ybjtXOw57L7B4O0vdslo1U4s"
+myToken = "xoxb-3451298675446-3443353129815-IPfyh7jGKWTRoJXg0HZGDLT2"
 
 def post_message(token, channel, text):
     response = requests.post("https://slack.com/api/chat.postMessage",
