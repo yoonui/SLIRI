@@ -24,7 +24,7 @@ def cv2_draw_label(image, text, point):
         imageFont = ImageFont.truetype(font, 28)
     except:
         imageFont = ImageFont.load_default()
-    draw.text((x, y), text, font=imageFont, fill=(255, 255, 255))
+    draw.text((x, y), text, font=imageFont, fill=(0, 0, 0))
     image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
 
     return image
@@ -45,7 +45,7 @@ hands = mp_hands.Hands(
     min_tracking_confidence = 0.5
 )
 
-file = np.genfromtxt('./server/hand_recog/data.txt', delimiter=',')
+file = np.genfromtxt('data.txt', delimiter=',')
 angleFile = file[:,:-1]
 labelFile = file[:,-1]
 angle = angleFile.astype(np.float32)
@@ -60,7 +60,7 @@ prev_index = 0
 sentence = ''
 recognizeDelay = 2
 
-assistant_result = np.zeros((200, 1500, 3), np.uint8)
+assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
 #cv2.imshow('ASSISTANT_RESULT', assistant_result)
 
 while True:
@@ -125,7 +125,7 @@ while True:
                                 pass
                         elif index == 34:
                             result_txt = ''
-                            assistant_result = np.zeros((200, 1500, 3), np.uint8)
+                            assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
                             combined_sentence = join_jamos(sentence)
                             result_txt = assistant.assistant(combined_sentence)
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
