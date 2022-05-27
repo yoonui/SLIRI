@@ -158,6 +158,7 @@ while True:
                             sentence = ''
                         elif index == 13 and flag == 1:
                             result_txt = assistant.assistant("비")
+                            assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
                         else:
                             sentence += gesture[index]
