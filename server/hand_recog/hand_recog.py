@@ -156,7 +156,7 @@ while True:
                             result_txt = assistant.assistant(combined_sentence)
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
                             sentence = ''
-                        elif index == 13 and flag == 1:
+                        elif index == 13:
                             result_txt = assistant.assistant("비")
                             assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
