@@ -111,17 +111,20 @@ while True:
                             command_list = cv2_draw_label(command_list, command_list_1[0], (10, 30))
                             command_list = cv2_draw_label(command_list, command_list_1[1], (10, 60))
                             command_list = cv2_draw_label(command_list, command_list_1[2], (10, 90))
+                            sentence += gesture[index]
                         elif index == 0:
                             command_list = np.ones((200, 150, 3), np.uint8) * 255
                             command_list = cv2_draw_label(command_list, command_list_2[0], (10, 30))
                             command_list = cv2_draw_label(command_list, command_list_2[1], (10, 60))
                             command_list = cv2_draw_label(command_list, command_list_2[2], (10, 90))
+                            sentence += gesture[index]
                             flag = 1
                         elif index == 4:
                             command_list = np.ones((200, 150, 3), np.uint8) * 255
                             command_list = cv2_draw_label(command_list, command_list_3[0], (10, 30))
                             command_list = cv2_draw_label(command_list, command_list_3[1], (10, 60))
                             command_list = cv2_draw_label(command_list, command_list_3[2], (10, 90))
+                            sentence += gesture[index]
                         elif index == 31:
                             sentence += ' '
                         elif index == 32:
