@@ -55,19 +55,8 @@ const LoginPage = (props) => {
     }
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        let body = {
-            email: Email,
-            password: Password
-        };
+        props.history.push('/');
 
-        dispatch(loginUser(body))
-            .then(response => {
-                if(response.payload.loginSuccess){
-                    props.history.push('/');
-                }else{
-                    alert("Error");
-                }
-            })
     }
 
     return (
