@@ -111,7 +111,7 @@ while True:
                             command_list = cv2_draw_label(command_list, command_list_1[0], (10, 30))
                             command_list = cv2_draw_label(command_list, command_list_1[1], (10, 60))
                             command_list = cv2_draw_label(command_list, command_list_1[2], (10, 90))
-                        elif index == 0:
+                        elif index == 0 and flag == 0:
                             command_list = np.ones((200, 150, 3), np.uint8) * 255
                             command_list = cv2_draw_label(command_list, command_list_2[0], (10, 30))
                             command_list = cv2_draw_label(command_list, command_list_2[1], (10, 60))
@@ -156,7 +156,7 @@ while True:
                             result_txt = assistant.assistant(combined_sentence)
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
                             sentence = ''
-                        elif index == 13 and flag == 1:
+                        elif index == 13:
                             result_txt = assistant.assistant("비")
                             assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
