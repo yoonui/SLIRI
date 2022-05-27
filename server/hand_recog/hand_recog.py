@@ -47,7 +47,7 @@ hands = mp_hands.Hands(
     min_tracking_confidence = 0.5
 )
 
-file = np.genfromtxt('data.txt', delimiter=',')
+file = np.genfromtxt('./server/hand_recog/data.txt', delimiter=',')
 angleFile = file[:,:-1]
 labelFile = file[:,-1]
 angle = angleFile.astype(np.float32)
