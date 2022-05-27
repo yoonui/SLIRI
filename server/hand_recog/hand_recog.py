@@ -29,6 +29,8 @@ def cv2_draw_label(image, text, point):
 
     return image
 
+
+
 max_num_hands = 1
 
 gesture = {
@@ -45,7 +47,7 @@ hands = mp_hands.Hands(
     min_tracking_confidence = 0.5
 )
 
-file = np.genfromtxt('./server/hand_recog/data.txt', delimiter=',')
+file = np.genfromtxt('data.txt', delimiter=',')
 angleFile = file[:,:-1]
 labelFile = file[:,-1]
 angle = angleFile.astype(np.float32)
@@ -62,6 +64,12 @@ recognizeDelay = 2
 
 assistant_result = np.ones((200, 1500, 3), np.uint8) * 255
 #cv2.imshow('ASSISTANT_RESULT', assistant_result)
+command_list_1 = ['1.날씨', '2.날짜', '3.뉴스']
+command_list_2 = ['1.강수확률', '2.강수량', '3.고민상담']
+command_list_3 = ['1.미세먼지', '2.마을버스', '3.맛집']
+command_list = np.ones((200, 150, 3), np.uint8) * 255
+
+flag = 0
 
 while True:
     ret, img = cap.read() #650 550
@@ -71,7 +79,8 @@ while True:
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     result = hands.process(imgRGB)
     
-    if result.multi_hand_landmarks is not None:
+    
+    if result.multi_hand_landmarks is not None: # 13번 선택
         for res in result.multi_hand_landmarks:
             joint = np.zeros((21,3))
             for j,lm in enumerate(res.landmark):
@@ -97,7 +106,23 @@ while True:
                     prev_index = index
                 else:
                     if time.time() - startTime > recognizeDelay:
-                        if index == 31:
+                        if index == 1:
+                            command_list = np.ones((200, 150, 3), np.uint8) * 255
+                            command_list = cv2_draw_label(command_list, command_list_1[0], (10, 30))
+                            command_list = cv2_draw_label(command_list, command_list_1[1], (10, 60))
+                            command_list = cv2_draw_label(command_list, command_list_1[2], (10, 90))
+                        elif index == 0:
+                            command_list = np.ones((200, 150, 3), np.uint8) * 255
+                            command_list = cv2_draw_label(command_list, command_list_2[0], (10, 30))
+                            command_list = cv2_draw_label(command_list, command_list_2[1], (10, 60))
+                            command_list = cv2_draw_label(command_list, command_list_2[2], (10, 90))
+                            flag = 1
+                        elif index == 4:
+                            command_list = np.ones((200, 150, 3), np.uint8) * 255
+                            command_list = cv2_draw_label(command_list, command_list_3[0], (10, 30))
+                            command_list = cv2_draw_label(command_list, command_list_3[1], (10, 60))
+                            command_list = cv2_draw_label(command_list, command_list_3[2], (10, 90))
+                        elif index == 31:
                             sentence += ' '
                         elif index == 32:
                             sentence = sentence[:-1]
@@ -131,11 +156,15 @@ while True:
                             result_txt = assistant.assistant(combined_sentence)
                             assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
                             sentence = ''
+                        elif index == 13 and flag == 1:
+                            result_txt = assistant.assistant("비")
+                            assistant_result = cv2_draw_label(assistant_result, result_txt, (30, 30))
                         else:
                             sentence += gesture[index]
                         startTime = time.time()
                 
             mp_drawing.draw_landmarks(img, res, mp_hands.HAND_CONNECTIONS)
+        
         
         final_sentence = join_jamos(sentence)
         img = cv2_draw_label(img, final_sentence, (30, 30))
@@ -148,6 +177,8 @@ while True:
         cv2.imshow('HAND', img)
         cv2.waitKey(1)
         cv2.imshow('ASSISTANT RESULT', assistant_result)
+        cv2.waitKey(1)
+        cv2.imshow('COMMAND LIST', command_list)
         cv2.waitKey(1)
         
         if keyboard.is_pressed('q'):
